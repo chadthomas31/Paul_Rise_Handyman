@@ -1,0 +1,282 @@
+import type { ServiceItem, Testimonial, ServiceArea } from './types'
+
+// Business Information
+export const BUSINESS_INFO = {
+  name: 'Paul Ries Handyman Services',
+  owner: 'Paul Ries',
+  tagline: 'Home Repairs Done Right',
+  phone: '(619) 727-7975',
+  email: 'paul@rieshandyman.sc',
+  website: 'https://www.paulrieshandyman.com',
+  address: {
+    street: 'San Clemente',
+    city: 'San Clemente',
+    state: 'CA',
+    zip: '92672',
+    country: 'USA',
+  },
+  hours: {
+    weekday: 'Monday - Friday: 8:00 AM - 6:00 PM',
+    saturday: 'Saturday: By Appointment',
+    sunday: 'Sunday: Closed',
+  },
+  serviceRadius: '20 miles',
+  yearsInBusiness: 15,
+  completedProjects: 500,
+} as const
+
+// Service Offerings
+export const SERVICES: ServiceItem[] = [
+  {
+    id: 'drywall-painting',
+    title: 'Drywall & Painting',
+    slug: 'drywall-painting',
+    shortDescription: 'Patching holes, texture matching, and interior painting. I make walls look new again.',
+    fullDescription: 'From small nail holes to large damaged sections, I handle all drywall repairs with precision. My painting services include interior rooms, trim work, and color consultation. Living in San Clemente, I understand how the coastal climate affects paint and drywall, and I use materials designed to withstand humidity and salt air.',
+    iconName: 'Paintbrush',
+    priceRange: '$100 - $500',
+    features: [
+      'Hole and crack repair',
+      'Texture matching',
+      'Interior painting',
+      'Trim and baseboard work',
+      'Color consultation',
+      'Moisture-resistant materials',
+    ],
+  },
+  {
+    id: 'general-repairs',
+    title: 'General Repairs',
+    slug: 'general-repairs',
+    shortDescription: 'Leaky faucets, squeaky doors, cabinet adjustments, and hardware replacement.',
+    fullDescription: 'The "honey-do" list specialist. I fix all those nagging issues that pile up: dripping faucets, stuck doors, loose cabinet hinges, broken drawer slides, and more. No job too small. I come prepared with a fully stocked truck to handle most repairs in a single visit.',
+    iconName: 'Wrench',
+    priceRange: '$75 - $300',
+    features: [
+      'Faucet and toilet repairs',
+      'Door adjustments',
+      'Cabinet hardware fixes',
+      'Window repairs',
+      'Drawer slide replacement',
+      'Weather stripping',
+    ],
+  },
+  {
+    id: 'furniture-assembly',
+    title: 'Furniture Assembly',
+    slug: 'furniture-assembly',
+    shortDescription: 'IKEA expert. Don't waste your weekend fighting instructions. I'll build it fast and sturdy.',
+    fullDescription: 'Skip the frustration and save your weekend. I've assembled hundreds of IKEA, Wayfair, Amazon, and other flat-pack furniture pieces. From simple bookcases to complex wardrobes and office setups, I ensure everything is built correctly, level, and secure. I bring all necessary tools and can even haul away the packaging.',
+    iconName: 'Hammer',
+    priceRange: '$100 - $400',
+    features: [
+      'IKEA assembly specialist',
+      'Office furniture setup',
+      'Outdoor furniture assembly',
+      'Complex wardrobe systems',
+      'Leveling and anchoring',
+      'Packaging removal',
+    ],
+  },
+  {
+    id: 'light-electrical',
+    title: 'Light Electrical',
+    slug: 'light-electrical',
+    shortDescription: 'Replacing outlets, installing ceiling fans, dimmer switches, and light fixtures.',
+    fullDescription: 'Safe and code-compliant electrical work for common household needs. I install ceiling fans, replace outdated outlets and switches, add dimmer controls, and hang new light fixtures. All work is done with proper safety procedures and follows California electrical code.',
+    iconName: 'Zap',
+    priceRange: '$125 - $500',
+    features: [
+      'Ceiling fan installation',
+      'Light fixture replacement',
+      'Outlet and switch upgrades',
+      'Dimmer switch installation',
+      'GFCI outlet installation',
+      'USB outlet installation',
+    ],
+  },
+  {
+    id: 'mounting-hanging',
+    title: 'Mounting & Hanging',
+    slug: 'mounting-hanging',
+    shortDescription: 'TV mounting, heavy mirrors, artwork, shelving, and window treatments.',
+    fullDescription: 'Professional mounting services for TVs, artwork, mirrors, shelving, and more. I find studs, use appropriate anchors, ensure everything is level, and hide cables when possible. Whether it's a 75-inch TV or a heavy bathroom mirror, I make sure it's secure and positioned perfectly.',
+    iconName: 'Ruler',
+    priceRange: '$100 - $400',
+    features: [
+      'TV mounting with cable concealment',
+      'Heavy mirror installation',
+      'Floating shelf installation',
+      'Curtain rod and blinds',
+      'Artwork and gallery walls',
+      'Bike and garage storage racks',
+    ],
+  },
+  {
+    id: 'hauling-cleanup',
+    title: 'Hauling & Cleanup',
+    slug: 'hauling-cleanup',
+    shortDescription: 'Garage cleanouts, debris removal, and donation runs. Reclaim your space.',
+    fullDescription: 'Overwhelmed by clutter? I help homeowners reclaim their garages, sheds, and storage areas. I'll haul away junk, make donation runs to local charities, and leave your space clean and organized. Perfect for moving preparation, estate cleanouts, or seasonal purging.',
+    iconName: 'Truck',
+    priceRange: '$150 - $800',
+    features: [
+      'Garage and shed cleanouts',
+      'Junk removal',
+      'Donation runs',
+      'Appliance removal',
+      'Green waste disposal',
+      'E-waste recycling',
+    ],
+  },
+]
+
+// Customer Testimonials
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    id: 't1',
+    name: 'Sarah Jenkins',
+    location: 'Talega, San Clemente',
+    text: 'Paul is a lifesaver. He fixed our sliding door and patched some drywall in the hallway. On time, polite, and cleaned up perfectly. We'll definitely call him again.',
+    rating: 5,
+    date: '2024-09-15',
+    service: 'General Repairs',
+  },
+  {
+    id: 't2',
+    name: 'Mike D.',
+    location: 'Pier Bowl area',
+    text: 'Hard to find reliable tradesmen in town. Paul actually answers his phone and shows up when he says he will. Did a great job mounting our TV and installing shelves. Highly recommended.',
+    rating: 5,
+    date: '2024-10-03',
+    service: 'Mounting & Hanging',
+  },
+  {
+    id: 't3',
+    name: 'Linda & Tom',
+    location: 'Forster Ranch',
+    text: 'We had a huge "honey-do" list that was six months overdue. Paul knocked it all out in one afternoon. Fair pricing, excellent work, and such a nice guy. Worth every penny.',
+    rating: 5,
+    date: '2024-08-22',
+    service: 'General Repairs',
+  },
+  {
+    id: 't4',
+    name: 'Jennifer Martinez',
+    location: 'Dana Point',
+    text: 'Paul assembled three IKEA wardrobes and a desk for us. It would have taken us all weekend and we probably would have messed it up. He was done in 3 hours and everything is perfect.',
+    rating: 5,
+    date: '2024-11-01',
+    service: 'Furniture Assembly',
+  },
+  {
+    id: 't5',
+    name: 'Robert Chen',
+    location: 'San Juan Capistrano',
+    text: 'Fantastic handyman! Helped us with multiple projects including painting our bedroom and installing a ceiling fan. Paul's attention to detail is outstanding.',
+    rating: 5,
+    date: '2024-07-18',
+    service: 'Drywall & Painting',
+  },
+  {
+    id: 't6',
+    name: 'The Andersons',
+    location: 'Ladera Ranch',
+    text: 'We were downsizing and had 20 years of garage clutter. Paul and his truck hauled everything away and even made donations for us. He transformed our space in one day.',
+    rating: 5,
+    date: '2024-09-30',
+    service: 'Hauling & Cleanup',
+  },
+]
+
+// Service Areas
+export const SERVICE_AREAS: ServiceArea[] = [
+  {
+    id: 'san-clemente',
+    name: 'San Clemente',
+    slug: 'san-clemente',
+    description: 'Proudly serving all San Clemente neighborhoods including Talega, Forster Ranch, Marblehead Coastal, Cyprus Shore, and the Pier Bowl area.',
+    neighborhoods: [
+      'Talega',
+      'Forster Ranch',
+      'Marblehead Coastal',
+      'Cyprus Shore',
+      'Pier Bowl',
+      'Southwest San Clemente',
+      'Shorecliffs',
+      'Rancho San Clemente',
+    ],
+    zipCodes: ['92672', '92673', '92674'],
+  },
+  {
+    id: 'dana-point',
+    name: 'Dana Point',
+    slug: 'dana-point',
+    description: 'Full handyman services throughout Dana Point, including Lantern Village, Monarch Beach, and all coastal neighborhoods.',
+    neighborhoods: [
+      'Lantern Village',
+      'Monarch Beach',
+      'Dana Point Harbor',
+      'Capistrano Beach',
+      'Salt Creek Beach area',
+    ],
+    zipCodes: ['92624', '92629'],
+  },
+  {
+    id: 'san-juan-capistrano',
+    name: 'San Juan Capistrano',
+    slug: 'san-juan-capistrano',
+    description: 'Serving San Juan Capistrano historic downtown and surrounding residential areas.',
+    neighborhoods: [
+      'Historic Downtown',
+      'Marbella Country Club',
+      'Rancho Capistrano',
+      'Hunt Club',
+    ],
+    zipCodes: ['92675', '92693'],
+  },
+]
+
+// FAQ Data
+export const FAQS = [
+  {
+    id: 'faq1',
+    question: 'What areas do you serve?',
+    answer: 'I primarily serve San Clemente, Dana Point, and San Juan Capistrano. I may travel further for larger projects - just ask!',
+  },
+  {
+    id: 'faq2',
+    question: 'Are you licensed and insured?',
+    answer: 'Yes! I carry general liability insurance and follow all California contractor guidelines for handyman services.',
+  },
+  {
+    id: 'faq3',
+    question: 'How do you charge for services?',
+    answer: 'Most jobs are quoted after a brief phone consultation. For smaller repairs, I often charge by the hour ($85/hour). Larger projects get a fixed quote. No hidden fees.',
+  },
+  {
+    id: 'faq4',
+    question: 'Do you offer free estimates?',
+    answer: 'Phone consultations are always free. For larger projects, I can schedule a free on-site estimate.',
+  },
+  {
+    id: 'faq5',
+    question: 'How quickly can you start?',
+    answer: 'My schedule varies, but I typically can fit in smaller jobs within a few days. Larger projects may need 1-2 weeks advance notice.',
+  },
+  {
+    id: 'faq6',
+    question: 'What if I'm not sure what I need?',
+    answer: 'That's what I'm here for! Call me and describe the problem. I'll help you figure out the best solution and give you an honest assessment.',
+  },
+  {
+    id: 'faq7',
+    question: 'Do you work on weekends?',
+    answer: 'Saturdays are available by appointment. I keep Sundays for family time, but I can accommodate emergencies.',
+  },
+  {
+    id: 'faq8',
+    question: 'What payment methods do you accept?',
+    answer: 'Cash, check, Venmo, and Zelle. Payment is due upon completion unless we arrange otherwise for larger projects.',
+  },
+]
