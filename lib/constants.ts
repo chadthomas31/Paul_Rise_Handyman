@@ -65,8 +65,8 @@ export const SERVICES: ServiceItem[] = [
     id: 'furniture-assembly',
     title: 'Furniture Assembly',
     slug: 'furniture-assembly',
-    shortDescription: 'IKEA expert. Don't waste your weekend fighting instructions. I'll build it fast and sturdy.',
-    fullDescription: 'Skip the frustration and save your weekend. I've assembled hundreds of IKEA, Wayfair, Amazon, and other flat-pack furniture pieces. From simple bookcases to complex wardrobes and office setups, I ensure everything is built correctly, level, and secure. I bring all necessary tools and can even haul away the packaging.',
+    shortDescription: 'IKEA expert. Don\'t waste your weekend fighting instructions. I\'ll build it fast and sturdy.',
+    fullDescription: 'Skip the frustration and save your weekend. I\'ve assembled hundreds of IKEA, Wayfair, Amazon, and other flat-pack furniture pieces. From simple bookcases to complex wardrobes and office setups, I ensure everything is built correctly, level, and secure. I bring all necessary tools and can even haul away the packaging.',
     iconName: 'Hammer',
     priceRange: '$100 - $400',
     features: [

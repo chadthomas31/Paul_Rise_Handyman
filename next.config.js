@@ -14,10 +14,6 @@ const nextConfig = {
   compress: true,
   // Generate standalone output for Vercel
   output: 'standalone',
-  // Experimental features for performance
-  experimental: {
-    optimizeCss: true,
-  },
 }
 
 module.exports = nextConfig
