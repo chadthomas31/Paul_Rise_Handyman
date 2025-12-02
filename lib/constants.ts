@@ -266,8 +266,8 @@ export const FAQS = [
   },
   {
     id: 'faq6',
-    question: 'What if I'm not sure what I need?',
-    answer: 'That's what I'm here for! Call me and describe the problem. I'll help you figure out the best solution and give you an honest assessment.',
+    question: 'What if I\'m not sure what I need?',
+    answer: 'That\'s what I\'m here for! Call me and describe the problem. I\'ll help you figure out the best solution and give you an honest assessment.',
   },
   {
     id: 'faq7',
