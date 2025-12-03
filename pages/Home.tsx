@@ -13,8 +13,8 @@ const IconMap = {
 export const Home: React.FC = () => {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative bg-slate-900 overflow-hidden h-[600px] lg:h-[700px]">
+      {/* Hero Section - Full viewport height */}
+      <section className="relative bg-slate-900 overflow-hidden h-screen min-h-[600px]">
         <div className="absolute inset-0">
           <img
             className="w-full h-full object-cover object-[center_50%]"
