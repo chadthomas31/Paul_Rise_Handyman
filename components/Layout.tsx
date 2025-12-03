@@ -40,13 +40,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-32">
+          <div className="flex justify-between items-center h-40">
             {/* Logo */}
             <NavLink to="/" className="flex items-center gap-3 group" onClick={closeMenu}>
               <img 
                 src="/assets/Logo/transparent.png" 
                 alt="Fix It San Clemente" 
-                className="h-20 md:h-28 w-auto object-contain"
+                className="h-24 md:h-36 w-auto object-contain"
               />
             </NavLink>
 
