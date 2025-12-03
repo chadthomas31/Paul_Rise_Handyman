@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 import { AIQuoteHelper } from './AIQuoteHelper';
 import { AIAnalysisResult } from '../types';
-import { Loader2 } from 'lucide-react';
-
-const API_URL = import.meta.env.PROD 
-  ? '/api/contact' 
-  : 'http://localhost:3000/api/contact';
 
 export const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -19,14 +14,11 @@ export const ContactForm: React.FC = () => {
   });
   
   const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysisResult | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    setError(null); // Clear error when user types
   };
 
   const handleAIComplete = (result: AIAnalysisResult) => {
@@ -38,40 +30,11 @@ export const ContactForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-
-    try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          aiAnalysis: aiAnalysis || undefined,
-        }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to submit form');
-      }
-
-      setSubmitted(true);
-    } catch (err) {
-      console.error('Form submission error:', err);
-      setError(
-        err instanceof Error 
-          ? err.message 
-          : 'Something went wrong. Please try calling Paul directly at (619) 727-7975.'
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    // In a real Next.js app, this would be a Server Action
+    console.log("Form Submitted:", formData);
+    setSubmitted(true);
   };
 
   if (submitted) {
@@ -83,20 +46,8 @@ export const ContactForm: React.FC = () => {
           </svg>
         </div>
         <h3 className="text-2xl font-bold text-slate-900 mb-2">Message Sent!</h3>
-        <p className="text-slate-600 mb-2">Thanks for contacting Paul. I'll get back to you within 24 hours (usually sooner) to confirm details.</p>
-        <p className="text-sm text-slate-500">A confirmation email has been sent to your inbox.</p>
-        <Button variant="outline" className="mt-6" onClick={() => {
-          setSubmitted(false);
-          setFormData({
-            name: '',
-            phone: '',
-            email: '',
-            address: '',
-            serviceType: 'General Repair',
-            description: ''
-          });
-          setAiAnalysis(null);
-        }}>
+        <p className="text-slate-600">Thanks for contacting Paul. I'll get back to you within 24 hours (usually sooner) to confirm details.</p>
+        <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
           Send Another Request
         </Button>
       </div>
@@ -121,17 +72,6 @@ export const ContactForm: React.FC = () => {
            </div>
         )}
 
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-            <strong>Error:</strong> {error}
-            <div className="mt-2">
-              <a href="tel:6197277975" className="text-red-800 underline font-medium">
-                Call Paul directly at (619) 727-7975
-              </a>
-            </div>
-          </div>
-        )}
-
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -141,8 +81,7 @@ export const ContactForm: React.FC = () => {
                 name="name"
                 id="name"
                 required
-                disabled={isSubmitting}
-                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border disabled:bg-slate-100 disabled:cursor-not-allowed"
+                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
                 value={formData.name}
                 onChange={handleChange}
               />
@@ -154,8 +93,7 @@ export const ContactForm: React.FC = () => {
                 name="phone"
                 id="phone"
                 required
-                disabled={isSubmitting}
-                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border disabled:bg-slate-100 disabled:cursor-not-allowed"
+                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
                 value={formData.phone}
                 onChange={handleChange}
               />
@@ -170,8 +108,7 @@ export const ContactForm: React.FC = () => {
                 name="email"
                 id="email"
                 required
-                disabled={isSubmitting}
-                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border disabled:bg-slate-100 disabled:cursor-not-allowed"
+                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -182,8 +119,7 @@ export const ContactForm: React.FC = () => {
                 type="text"
                 name="address"
                 id="address"
-                disabled={isSubmitting}
-                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border disabled:bg-slate-100 disabled:cursor-not-allowed"
+                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
                 placeholder="Street address or Neighborhood"
                 value={formData.address}
                 onChange={handleChange}
@@ -196,8 +132,7 @@ export const ContactForm: React.FC = () => {
             <select
               id="serviceType"
               name="serviceType"
-              disabled={isSubmitting}
-              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border disabled:bg-slate-100 disabled:cursor-not-allowed"
+              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
               value={formData.serviceType}
               onChange={handleChange}
             >
@@ -207,9 +142,6 @@ export const ContactForm: React.FC = () => {
               <option>Electrical (Light)</option>
               <option>Furniture Assembly</option>
               <option>Mounting & Hanging</option>
-              <option>Carpentry & Trim</option>
-              <option>Outdoor & Deck</option>
-              <option>Hauling & Cleanup</option>
               <option>Other</option>
             </select>
           </div>
@@ -221,29 +153,15 @@ export const ContactForm: React.FC = () => {
               name="description"
               rows={4}
               required
-              disabled={isSubmitting}
-              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border disabled:bg-slate-100 disabled:cursor-not-allowed"
+              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-3 border"
               placeholder="Describe what needs fixing..."
               value={formData.description}
               onChange={handleChange}
             />
           </div>
 
-          <Button 
-            type="submit" 
-            variant="secondary" 
-            fullWidth 
-            className="text-lg font-bold shadow-lg"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <span className="flex items-center justify-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin" />
-                Sending...
-              </span>
-            ) : (
-              'Send Request'
-            )}
+          <Button type="submit" variant="secondary" fullWidth className="text-lg font-bold shadow-lg">
+            Send Request
           </Button>
           <p className="text-xs text-center text-slate-500 mt-2">
             No spam. I only use your info to quote the job.
