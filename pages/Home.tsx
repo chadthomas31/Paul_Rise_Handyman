@@ -18,8 +18,8 @@ export const Home: React.FC = () => {
         <div className="absolute inset-0">
           <img
             className="w-full h-full object-cover object-center"
-            src="/paul-dog.jpg" 
-            alt="Paul Ries and his dog in San Clemente"
+            src="/assets/images/Paul and Deck Build .png" 
+            alt="Paul Ries and his dog on a deck in San Clemente"
           />
           {/* Gradient overlay to ensure text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/50 to-transparent" />
@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
             <div className="relative mb-12 lg:mb-0">
               <div className="absolute inset-0 bg-blue-600 rounded-2xl transform rotate-3 opacity-10"></div>
               <img 
-                src="/paul-framing.jpg" 
+                src="/assets/images/Paul Jobsite Carhartt shit.png" 
                 alt="Paul working on a framing project" 
                 className="relative rounded-2xl shadow-xl w-full object-cover h-[500px]"
               />
@@ -151,19 +151,19 @@ export const Home: React.FC = () => {
           {/* Happy Clients Photos */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg border-4 border-slate-800">
-                <img src="/happy-homeowners.jpg" alt="Happy homeowners" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                <img src="/assets/images/Paul and Homeowners.png" alt="Paul with happy homeowners" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <p className="text-white font-medium text-center">San Clemente Homeowners</p>
                 </div>
             </div>
              <div className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg border-4 border-slate-800">
-                <img src="/best-handyman.jpg" alt="Best Handyman Ever Sign" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                <img src="/assets/images/Paul_with_happy_clients.png" alt="Best Handyman Ever Sign" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <p className="text-white font-medium text-center">5-Star Reviews</p>
                 </div>
             </div>
              <div className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg border-4 border-slate-800">
-                <img src="/paul-birdhouse.jpg" alt="Custom Birdhouse Project" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                <img src="/assets/images/Paul with homeowners.png" alt="Custom Birdhouse Project" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                   <p className="text-white font-medium text-center">Custom Projects</p>
                 </div>
