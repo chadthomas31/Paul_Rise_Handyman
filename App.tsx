@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
+import { Blog } from './pages/Blog';
 import { DETAILED_SERVICES, PHONE_NUMBER } from './constants';
 import { Paintbrush, Wrench, Hammer, Zap, Ruler, Truck, CheckCircle, Clock, DollarSign, ChevronDown, ChevronUp, Phone, ArrowRight } from 'lucide-react';
 import { Button } from './components/Button';
@@ -297,6 +298,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>
