@@ -3,7 +3,7 @@ import { AIAnalysisResult } from "../types";
 
 // Helper to get safe API key
 const getApiKey = (): string | undefined => {
-  return process.env.API_KEY;
+  return process.env.API_KEY_GEMINI || process.env.API_KEY;
 };
 
 // Smart mock analysis based on keywords when no API key
