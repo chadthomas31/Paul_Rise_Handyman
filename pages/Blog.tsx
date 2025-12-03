@@ -548,7 +548,7 @@ export const Blog: React.FC = () => {
           "@type": "Blog",
           "name": "Paul Ries Handyman - Home Repair Tips",
           "description": "Practical home repair advice from a San Clemente handyman with 15+ years of experience",
-          "url": "https://paul-rise-handyman.vercel.app/#/blog",
+          "url": "https://fixitsanclemente.com/#/blog",
           "author": {
             "@type": "Person",
             "name": "Paul Ries"
