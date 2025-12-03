@@ -1,4 +1,3 @@
-import { GoogleGenAI, Type } from "@google/genai";
 import { AIAnalysisResult } from "../types";
 
 // Helper to get safe API key
@@ -180,51 +179,61 @@ export const analyzeProjectRequest = async (userDescription: string): Promise<AI
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
-    
-    const prompt = `
-      You are an expert handyman assistant for Paul Ries Handyman Services in San Clemente, CA.
-      Analyze the following project description from a homeowner: "${userDescription}".
-      
-      IMPORTANT TIME ESTIMATES:
-      - Small repairs (faucet fix, doorknob, small drywall hole): 1-2 hours
-      - Medium repairs (toilet replacement, ceiling fan install, door install): 2-4 hours
-      - Larger repairs (deck board replacement, room painting, multiple fixtures): 4-8 hours
-      - Big projects (deck rebuild, bathroom updates, large painting): 1-3 DAYS (8-24 hours)
-      - Major projects (full deck build, remodels, renovations): Multiple DAYS or WEEKS (40-100+ hours)
-      
-      Determine:
-      1. Trade category (Plumbing, Electrical, Drywall & Painting, Carpentry, Deck & Outdoor, Doors & Windows, Furniture Assembly, General Handyman, Major Construction)
-      2. Realistic time estimate (be generous - include prep, cleanup, possible complications)
-      3. Complexity (Low, Medium, High)
-      4. A helpful recommendation or clarifying question
-    `;
+    const prompt = `You are an expert handyman assistant for Paul Ries Handyman Services in San Clemente, CA.
+Analyze this project: "${userDescription}"
 
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            category: { type: Type.STRING },
-            estimatedHours: { type: Type.STRING },
-            complexity: { type: Type.STRING, enum: ["Low", "Medium", "High"] },
-            recommendation: { type: Type.STRING }
-          },
-          required: ["category", "estimatedHours", "complexity", "recommendation"]
-        }
+TIME ESTIMATES GUIDE:
+- Small repairs (faucet, doorknob, small hole): 1-2 hours
+- Medium repairs (toilet, ceiling fan, door): 2-4 hours  
+- Larger repairs (deck boards, room paint): 4-8 hours
+- Big projects (deck rebuild, bathroom): 1-3 DAYS (8-24 hours)
+- Major projects (full deck build, remodel): Multiple DAYS/WEEKS (40-100+ hours)
+
+Respond with ONLY valid JSON in this exact format:
+{
+  "category": "one of: Plumbing, Electrical, Drywall & Painting, Carpentry, Deck & Outdoor, Doors & Windows, Furniture Assembly, General Handyman, Major Construction",
+  "estimatedHours": "realistic time range like '2-4 hours' or '2-3 days (16-24 hours)'",
+  "complexity": "Low, Medium, or High",
+  "recommendation": "one helpful sentence for the homeowner"
+}`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 500,
+          }
+        })
       }
-    });
+    );
 
-    if (response.text) {
-      return JSON.parse(response.text) as AIAnalysisResult;
+    if (!response.ok) {
+      console.error("Gemini API error:", response.status);
+      return getMockAnalysis(userDescription);
     }
-    return null;
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (text) {
+      // Extract JSON from the response (in case there's extra text)
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]) as AIAnalysisResult;
+      }
+    }
+    
+    // Fall back to mock if parsing fails
+    return getMockAnalysis(userDescription);
 
   } catch (error) {
     console.error("Gemini Analysis Error:", error);
-    return null;
+    // Fall back to smart mock analysis on any error
+    return getMockAnalysis(userDescription);
   }
 };
