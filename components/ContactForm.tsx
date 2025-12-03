@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './Button';
 import { AIQuoteHelper } from './AIQuoteHelper';
 import { AIAnalysisResult } from '../types';
+import { Loader2, AlertCircle } from 'lucide-react';
 
 export const ContactForm: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -13,7 +16,8 @@ export const ContactForm: React.FC = () => {
     description: ''
   });
   
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysisResult | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -30,29 +34,37 @@ export const ContactForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real Next.js app, this would be a Server Action
-    console.log("Form Submitted:", formData);
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setError(null);
+    
+    try {
+      // Send to API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          aiAnalysis: aiAnalysis
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        // Redirect to thank you page
+        navigate('/thank-you');
+      } else {
+        setError(data.error || 'Something went wrong. Please try again or call Paul directly.');
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      setError('Unable to send request. Please call Paul directly at (619) 727-7975.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-
-  if (submitted) {
-    return (
-      <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center animate-fade-in">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
-          <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 className="text-2xl font-bold text-slate-900 mb-2">Message Sent!</h3>
-        <p className="text-slate-600">Thanks for contacting Paul. I'll get back to you within 24 hours (usually sooner) to confirm details.</p>
-        <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
-          Send Another Request
-        </Button>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -160,8 +172,34 @@ export const ContactForm: React.FC = () => {
             />
           </div>
 
-          <Button type="submit" variant="secondary" fullWidth className="text-lg font-bold shadow-lg">
-            Send Request
+          {error && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-red-800 font-medium">Error</p>
+                <p className="text-red-600 text-sm">{error}</p>
+                <a href="tel:6197277975" className="text-red-700 underline text-sm font-medium">
+                  Call Paul directly at (619) 727-7975
+                </a>
+              </div>
+            </div>
+          )}
+
+          <Button 
+            type="submit" 
+            variant="secondary" 
+            fullWidth 
+            className="text-lg font-bold shadow-lg"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              'Send Request'
+            )}
           </Button>
           <p className="text-xs text-center text-slate-500 mt-2">
             No spam. I only use your info to quote the job.

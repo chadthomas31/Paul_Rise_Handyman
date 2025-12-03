@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-d
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { Blog } from './pages/Blog';
+import { ThankYou } from './pages/ThankYou';
 import { DETAILED_SERVICES, PHONE_NUMBER } from './constants';
 import { Paintbrush, Wrench, Hammer, Zap, Ruler, Truck, CheckCircle, Clock, DollarSign, ChevronDown, ChevronUp, Phone, ArrowRight } from 'lucide-react';
 import { Button } from './components/Button';
@@ -300,6 +301,7 @@ const App: React.FC = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
       </Layout>
     </Router>
