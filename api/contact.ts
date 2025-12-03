@@ -47,7 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data: ContactFormData = req.body;
 
     // Validate required fields
-    if (!data.name || !data.phone || !data.email || !data.description) {
+    if (!data.name || !data.phone || !data.email || !data.serviceType || !data.description) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
