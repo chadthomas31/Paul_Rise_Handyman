@@ -17,7 +17,7 @@ export const Home: React.FC = () => {
       <section className="relative bg-slate-900 overflow-hidden h-[600px] lg:h-[700px]">
         <div className="absolute inset-0">
           <img
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-top"
             src="/assets/images/Paul and Deck Build .png" 
             alt="Paul Ries and his dog on a deck in San Clemente"
           />
