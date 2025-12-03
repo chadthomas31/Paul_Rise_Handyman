@@ -132,13 +132,17 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
           </div>
           <div>
-            <h3 className="text-white text-lg font-bold mb-4">Service Area</h3>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <h3 className="text-white text-lg font-bold mb-4">Service Areas</h3>
+            <p className="text-sm text-slate-400 mb-3">Proudly serving South Orange County:</p>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-slate-400">
               <li>San Clemente</li>
-              <li>Talega</li>
               <li>Dana Point</li>
-              <li>Capistrano Beach</li>
               <li>San Juan Capistrano</li>
+              <li>Laguna Niguel</li>
+              <li>Mission Viejo</li>
+              <li>Laguna Hills</li>
+              <li>Aliso Viejo</li>
+              <li>& nearby areas</li>
             </ul>
           </div>
           <div>

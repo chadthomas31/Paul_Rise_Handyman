@@ -3,7 +3,20 @@ import { ServiceItem, Testimonial } from './types';
 export const BUSINESS_NAME = "Paul Ries Handyman Services";
 export const PHONE_NUMBER = "(619) 727-7975";
 export const EMAIL_ADDRESS = "paul@rieshandyman.sc";
-export const SERVICE_AREA = "San Clemente, Dana Point, & San Juan Capistrano";
+export const SERVICE_AREA = "San Clemente & South Orange County";
+
+// All service areas
+export const SERVICE_CITIES = [
+  'San Clemente',
+  'Dana Point', 
+  'San Juan Capistrano',
+  'Laguna Niguel',
+  'Mission Viejo',
+  'Laguna Hills',
+  'Aliso Viejo',
+  'Capistrano Beach',
+  'Talega'
+];
 
 export const SERVICES: ServiceItem[] = [
   {
