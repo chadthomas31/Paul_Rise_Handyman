@@ -13,6 +13,26 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // Paul's email for notifications
 const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL || 'paul@paulrieshandyman.com';
 
+/**
+ * Escapes HTML special characters to prevent XSS attacks
+ * Must be used on all user-supplied data before embedding in HTML
+ */
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Escapes HTML and converts newlines to <br> tags for display
+ */
+function escapeHtmlWithLineBreaks(unsafe: string): string {
+  return escapeHtml(unsafe).replace(/\n/g, '<br>');
+}
+
 interface ContactFormData {
   name: string;
   phone: string;
@@ -51,6 +71,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    // Sanitize all user inputs for HTML embedding
+    const sanitized = {
+      name: escapeHtml(data.name),
+      firstName: escapeHtml(data.name.split(' ')[0]),
+      phone: escapeHtml(data.phone),
+      email: escapeHtml(data.email),
+      address: data.address ? escapeHtml(data.address) : null,
+      serviceType: escapeHtml(data.serviceType),
+      description: escapeHtmlWithLineBreaks(data.description),
+      descriptionShort: escapeHtml(data.description.substring(0, 100)) + (data.description.length > 100 ? '...' : ''),
+      aiAnalysis: data.aiAnalysis ? {
+        category: escapeHtml(data.aiAnalysis.category),
+        estimatedHours: escapeHtml(data.aiAnalysis.estimatedHours),
+        complexity: escapeHtml(data.aiAnalysis.complexity),
+        recommendation: escapeHtml(data.aiAnalysis.recommendation),
+      } : null,
+    };
+
     // 1. Save to Supabase database
     const { data: lead, error: dbError } = await supabase
       .from('leads')
@@ -73,20 +111,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .select()
       .single();
 
+    // If database save fails, return error - don't proceed with misleading success
     if (dbError) {
       console.error('Database error:', dbError);
-      // Continue with email even if DB fails
+      return res.status(500).json({ 
+        error: 'Failed to save your request. Please call Paul directly at (619) 727-7975.',
+        details: process.env.NODE_ENV === 'development' ? dbError.message : undefined
+      });
     }
 
     // 2. Send email notification to Paul
-    const aiInfo = data.aiAnalysis
+    const aiInfo = sanitized.aiAnalysis
       ? `
         <h3 style="color: #2563eb; margin-top: 20px;">🤖 AI Assessment</h3>
         <ul style="background: #f0f9ff; padding: 15px 25px; border-radius: 8px;">
-          <li><strong>Category:</strong> ${data.aiAnalysis.category}</li>
-          <li><strong>Estimated Time:</strong> ${data.aiAnalysis.estimatedHours}</li>
-          <li><strong>Complexity:</strong> ${data.aiAnalysis.complexity}</li>
-          <li><strong>Recommendation:</strong> ${data.aiAnalysis.recommendation}</li>
+          <li><strong>Category:</strong> ${sanitized.aiAnalysis.category}</li>
+          <li><strong>Estimated Time:</strong> ${sanitized.aiAnalysis.estimatedHours}</li>
+          <li><strong>Complexity:</strong> ${sanitized.aiAnalysis.complexity}</li>
+          <li><strong>Recommendation:</strong> ${sanitized.aiAnalysis.recommendation}</li>
         </ul>
       `
       : '';
@@ -94,7 +136,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const emailResult = await resend.emails.send({
       from: 'Paul Ries Handyman <notifications@paulrieshandyman.com>',
       to: [NOTIFICATION_EMAIL],
-      subject: `🔧 New Quote Request from ${data.name}`,
+      subject: `🔧 New Quote Request from ${sanitized.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #2563eb, #1e40af); padding: 30px; border-radius: 12px 12px 0 0;">
@@ -107,36 +149,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Name:</strong></td>
-                <td style="padding: 8px 0; color: #1e293b;">${data.name}</td>
+                <td style="padding: 8px 0; color: #1e293b;">${sanitized.name}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Phone:</strong></td>
                 <td style="padding: 8px 0; color: #1e293b;">
-                  <a href="tel:${data.phone}" style="color: #2563eb;">${data.phone}</a>
+                  <a href="tel:${sanitized.phone}" style="color: #2563eb;">${sanitized.phone}</a>
                 </td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Email:</strong></td>
                 <td style="padding: 8px 0; color: #1e293b;">
-                  <a href="mailto:${data.email}" style="color: #2563eb;">${data.email}</a>
+                  <a href="mailto:${sanitized.email}" style="color: #2563eb;">${sanitized.email}</a>
                 </td>
               </tr>
-              ${data.address ? `
+              ${sanitized.address ? `
               <tr>
                 <td style="padding: 8px 0; color: #64748b;"><strong>Address:</strong></td>
-                <td style="padding: 8px 0; color: #1e293b;">${data.address}</td>
+                <td style="padding: 8px 0; color: #1e293b;">${sanitized.address}</td>
               </tr>
               ` : ''}
             </table>
             
             <h3 style="color: #1e293b; margin-top: 25px;">Service Requested</h3>
             <p style="background: #fef3c7; padding: 10px 15px; border-radius: 6px; display: inline-block; font-weight: bold; color: #92400e;">
-              ${data.serviceType}
+              ${sanitized.serviceType}
             </p>
             
             <h3 style="color: #1e293b; margin-top: 20px;">Project Description</h3>
             <p style="background: #f8fafc; padding: 15px; border-radius: 8px; color: #475569; line-height: 1.6;">
-              ${data.description.replace(/\n/g, '<br>')}
+              ${sanitized.description}
             </p>
             
             ${aiInfo}
@@ -144,16 +186,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 25px 0;">
             
             <div style="text-align: center;">
-              <a href="tel:${data.phone}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-right: 10px;">
-                📞 Call ${data.name.split(' ')[0]}
+              <a href="tel:${sanitized.phone}" style="display: inline-block; background: #2563eb; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-right: 10px;">
+                📞 Call ${sanitized.firstName}
               </a>
-              <a href="mailto:${data.email}" style="display: inline-block; background: #64748b; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+              <a href="mailto:${sanitized.email}" style="display: inline-block; background: #64748b; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">
                 ✉️ Send Email
               </a>
             </div>
             
             <p style="color: #94a3b8; font-size: 12px; text-align: center; margin-top: 25px;">
-              Lead ID: ${lead?.id || 'N/A'} • Received: ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PST
+              Lead ID: ${lead.id} • Received: ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PST
             </p>
           </div>
         </div>
@@ -162,12 +204,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (emailResult.error) {
       console.error('Email error:', emailResult.error);
+      // Log but don't fail - the lead was saved successfully
     }
 
     // 3. Send confirmation email to customer
-    await resend.emails.send({
+    const customerEmailResult = await resend.emails.send({
       from: 'Paul Ries Handyman <noreply@paulrieshandyman.com>',
-      to: [data.email],
+      to: [data.email], // Use original email for delivery
       subject: `Thanks for contacting Paul Ries Handyman!`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -176,7 +219,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           </div>
           
           <div style="background: #ffffff; padding: 30px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
-            <p style="font-size: 16px; color: #1e293b;">Hi ${data.name.split(' ')[0]},</p>
+            <p style="font-size: 16px; color: #1e293b;">Hi ${sanitized.firstName},</p>
             
             <p style="color: #475569; line-height: 1.6;">
               I received your quote request and will get back to you within 24 hours (usually much sooner!).
@@ -188,8 +231,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             
             <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h3 style="margin-top: 0; color: #1e293b;">Your Request Summary:</h3>
-              <p style="margin: 5px 0; color: #64748b;"><strong>Service:</strong> ${data.serviceType}</p>
-              <p style="margin: 5px 0; color: #64748b;"><strong>Description:</strong> ${data.description.substring(0, 100)}${data.description.length > 100 ? '...' : ''}</p>
+              <p style="margin: 5px 0; color: #64748b;"><strong>Service:</strong> ${sanitized.serviceType}</p>
+              <p style="margin: 5px 0; color: #64748b;"><strong>Description:</strong> ${sanitized.descriptionShort}</p>
             </div>
             
             <p style="color: #475569;">
@@ -203,10 +246,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `,
     });
 
+    if (customerEmailResult.error) {
+      console.error('Customer email error:', customerEmailResult.error);
+    }
+
     return res.status(200).json({ 
       success: true, 
       message: 'Quote request submitted successfully',
-      leadId: lead?.id 
+      leadId: lead.id,
+      emailSent: !emailResult.error,
+      confirmationEmailSent: !customerEmailResult.error
     });
 
   } catch (error) {
@@ -214,4 +263,3 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Failed to process request' });
   }
 }
-
