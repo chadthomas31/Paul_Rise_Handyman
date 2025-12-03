@@ -239,25 +239,34 @@ const ServicesPage = () => {
 
 const AboutPage = () => (
   <div className="py-20 max-w-7xl mx-auto px-4">
+    {/* 3D Logo Hero */}
+    <div className="text-center mb-16">
+      <img 
+        src="/assets/Logo/fix-it-logo-3d.png" 
+        alt="Fix It San Clemente 3D Logo" 
+        className="h-48 md:h-64 w-auto mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+      />
+    </div>
+
     <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
       <div className="relative mb-12 lg:mb-0">
         <div className="absolute inset-0 bg-blue-600 rounded-2xl transform rotate-3 opacity-10"></div>
         <img 
-          src="/assets/images/Paul Ries .png" 
-          alt="Paul Ries - San Clemente Handyman" 
+          src="/assets/images/paul-truck..png" 
+          alt="Paul Ries with his work truck - Fix It San Clemente" 
           className="relative rounded-2xl shadow-xl w-full object-cover h-[500px]"
         />
       </div>
       <div>
-        <h1 className="text-4xl font-bold mb-6">About Paul</h1>
+        <h1 className="text-4xl font-bold mb-6">Meet Paul Ries</h1>
         <p className="text-xl text-slate-600 mb-6">
-          Paul has been serving the San Clemente community for over a decade with reliable, quality handyman services.
+          Your trusted local handyman serving San Clemente and South Orange County for over 15 years.
         </p>
         <p className="text-lg text-slate-600 mb-6">
           As a local resident, Paul understands the unique challenges that coastal living brings to home maintenance. From salt air corrosion to the effects of marine weather on homes, he's seen it all and knows how to fix it right.
         </p>
         <p className="text-lg text-slate-600 mb-8">
-          When you call Paul, you're not getting a faceless corporation – you're getting a neighbor who takes pride in his work and stands behind every job.
+          When you call Paul, you're not getting a faceless corporation – you're getting a neighbor who takes pride in his work and stands behind every job. No job too small, no detail overlooked.
         </p>
         <div className="grid grid-cols-2 gap-6">
           <div className="bg-slate-50 p-4 rounded-lg">

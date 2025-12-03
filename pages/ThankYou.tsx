@@ -138,8 +138,17 @@ export const ThankYou: React.FC = () => {
           </Link>
         </div>
 
+        {/* 3D Logo */}
+        <div className="flex justify-center mt-12 mb-6">
+          <img 
+            src="/assets/Logo/fix-it-logo-3d.png" 
+            alt="Fix It San Clemente" 
+            className="h-32 w-auto drop-shadow-xl hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+
         {/* Reassurance Message */}
-        <div className="text-center mt-12 text-slate-500 text-sm">
+        <div className="text-center text-slate-500 text-sm">
           <p>
             You're in good hands. I've helped over 500+ homeowners in South Orange County 
             with their home repairs and improvements.

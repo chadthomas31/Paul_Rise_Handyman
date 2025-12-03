@@ -44,14 +44,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Logo */}
             <NavLink to="/" className="flex items-center gap-3 group" onClick={closeMenu}>
               <img 
-                src="/assets/images/Paul Ries whiteback ground .png" 
-                alt="Paul Ries" 
-                className="w-12 h-12 rounded-full object-cover border-2 border-blue-600 group-hover:border-blue-700 transition-colors"
+                src="/assets/Logo/fix-it-logo.png" 
+                alt="Fix It San Clemente" 
+                className="h-14 w-auto object-contain"
               />
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-slate-900 leading-none">PAUL RIES</span>
-                <span className="text-xs text-slate-500 font-medium tracking-widest uppercase">Handyman Services</span>
-              </div>
             </NavLink>
 
             {/* Desktop Nav */}
